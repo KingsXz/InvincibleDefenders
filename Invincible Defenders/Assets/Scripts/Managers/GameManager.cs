@@ -5,17 +5,30 @@ using PathCreation;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] GameObject enemyPref;
+    public static GameManager Instance;
     [SerializeField] LevelStructure lvlStruct;
+    [SerializeField] float playerHp = 100;
     int waveNumber;
 
+
+    public float PlayerHp { get => playerHp; set => playerHp = value; }
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
 
     void Start()
     {
         Instantiate(lvlStruct);
         StartWave(waveNumber);
-
-        
     }
 
     void Update()
@@ -84,7 +97,6 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(timer);
         for (int i2 = 0; i2 < lvlStruct.Wave[waveNumber].EnemySetPerLane[setNumber].Enemies[i].Quantity; i2++)
         {
-            Debug.Log(i2);
             Enemy enemySpawned = Instantiate(lvlStruct.Wave[waveNumber].EnemySetPerLane[setNumber].Enemies[i].EnemyType);
             enemySpawned.PathCreator = paths[0];
             yield return new WaitForSeconds(1);

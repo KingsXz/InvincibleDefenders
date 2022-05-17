@@ -5,14 +5,16 @@ using UnityEngine;
 public class Tower : MonoBehaviour
 {
     bool isPlaced;
-    [SerializeField]float towerRange = 2;
+    [SerializeField] float towerRange = 2;
     [SerializeField] GameObject towerRangeObj;
+    [SerializeField] float towerDamage = 35;
     GameObject rangeObj;
     Color32 cor;
     [SerializeField] StateTower towerState;
     [SerializeField] Enemy enemyFocus;
     [SerializeField] GameObject shotPre;
     float timer = 0;
+    bool canShot = true;
 
     enum StateTower
     {
@@ -70,6 +72,7 @@ public class Tower : MonoBehaviour
         if(enemiesInRange.Length == 1)
         {
             enemyFocus = enemiesInRange[0].GetComponent<Enemy>();
+            towerState = StateTower.shooting;
         }
         if(enemiesInRange.Length > 1)
         {
@@ -85,7 +88,12 @@ public class Tower : MonoBehaviour
 
     private void ShootTarget()
     {
-        
+        if(enemyFocus == null)
+        {
+            Debug.Log("dead");
+            towerState = StateTower.idle;
+            return;
+        }
         if (Vector2.Distance(transform.position, enemyFocus.transform.position) >= towerRange + 0.2f)
         {
             enemyFocus = null;
@@ -94,15 +102,27 @@ public class Tower : MonoBehaviour
         else
         {
             
-            if(timer == 0)
+            /*if(timer == 0)
             {
                 GameObject shot = Instantiate(shotPre, transform.position, Quaternion.identity);
-
+                shot.GetComponent<Shot>().GetInfo(enemyFocus.gameObject,transform, towerDamage);
             }
             timer += Time.deltaTime;
-            if (timer >= 2)
-                timer = 0;
+            if (timer >= 1)
+                timer = 0;*/
+            if(canShot == true)
+            {
+                GameObject shot = Instantiate(shotPre, transform.position, Quaternion.identity);
+                shot.GetComponent<Shot>().GetInfo(enemyFocus.gameObject, transform, towerDamage);
+                StartCoroutine(ShootCooldown());
+            }
         }
-        Debug.Log(enemyFocus);
+    }
+
+    IEnumerator ShootCooldown()
+    {
+        canShot = false;
+        yield return new WaitForSeconds(1);
+        canShot = true;
     }
 }

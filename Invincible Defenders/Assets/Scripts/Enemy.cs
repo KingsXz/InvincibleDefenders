@@ -4,14 +4,14 @@ using UnityEngine;
 using PathCreation;
 using UnityEngine.UI;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IDamagable
 {
 
     [SerializeField] PathCreator pathCreator;
     [SerializeField] float speed;
     [SerializeField] float hp;
     [SerializeField] Image hpBar;
-    float distanceTraveled;
+    [SerializeField] float distanceTraveled;
 
     [SerializeField]State enemyState;
     enum State
@@ -22,16 +22,17 @@ public class Enemy : MonoBehaviour
 
     public PathCreator PathCreator { get => pathCreator; set => pathCreator = value; }
     public float DistanceTraveled { get => distanceTraveled; set => distanceTraveled = value; }
+    public float Hp { get => hp; set => hp = value; }
 
     void Start()
     {
-        hp = 100;
+        Hp = 100;
         enemyState = State.Path;
     }
 
     void Update()
     {
-        hpBar.fillAmount = hp / 100;
+        hpBar.fillAmount = Hp / 100;
         if(enemyState == State.Path)
         {
             FollowPath();
@@ -46,5 +47,24 @@ public class Enemy : MonoBehaviour
     {
         DistanceTraveled += speed * Time.deltaTime;
         transform.position = PathCreator.path.GetPointAtDistance(DistanceTraveled);
+    }
+
+    public void TakeDamage(float damageToTake)
+    {
+        Hp = Hp - damageToTake;
+        if(Hp <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("col");
+        if (collision.gameObject.tag == "Base")
+        {
+            collision.gameObject.GetComponent<IDamagable>().TakeDamage(1f);
+            Destroy(gameObject);
+        }
     }
 }
