@@ -9,9 +9,12 @@ public class Enemy : MonoBehaviour, IDamagable
 
     [SerializeField] PathCreator pathCreator;
     [SerializeField] float speed;
-    [SerializeField] float hp;
+    [SerializeField] float maxHp;
+    [SerializeField] float currentHp;
     [SerializeField] Image hpBar;
     [SerializeField] float distanceTraveled;
+    [SerializeField] int moneyItGives;
+    GameManager gM;
 
     [SerializeField]State enemyState;
     enum State
@@ -22,17 +25,18 @@ public class Enemy : MonoBehaviour, IDamagable
 
     public PathCreator PathCreator { get => pathCreator; set => pathCreator = value; }
     public float DistanceTraveled { get => distanceTraveled; set => distanceTraveled = value; }
-    public float Hp { get => hp; set => hp = value; }
+    public float MaxHp { get => maxHp; set => maxHp = value; }
 
     void Start()
     {
-        Hp = 100;
+        currentHp = maxHp;
         enemyState = State.Path;
+        gM = GameManager.Instance;
     }
 
     void Update()
     {
-        hpBar.fillAmount = Hp / 100;
+        hpBar.fillAmount = (currentHp * 100 / maxHp) / 100;
         if(enemyState == State.Path)
         {
             FollowPath();
@@ -51,9 +55,10 @@ public class Enemy : MonoBehaviour, IDamagable
 
     public void TakeDamage(float damageToTake)
     {
-        Hp = Hp - damageToTake;
-        if(Hp <= 0)
+        currentHp = currentHp - damageToTake;
+        if(currentHp <= 0)
         {
+            gM.PlayerMoney += moneyItGives;
             Destroy(gameObject);
         }
     }

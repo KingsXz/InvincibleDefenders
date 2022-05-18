@@ -13,6 +13,11 @@ public class HPLoss : MonoBehaviour, IDamagable
 
     public void TakeDamage(float damageToTake)
     {
-        gM.PlayerHp -= damageToTake;
+        gM.PlayerHp -= (int)damageToTake;
+        UiManager.InstanceUi.UpdateHP(gM.PlayerHp);
+        if(gM.PlayerHp <= 0)
+        {
+            
+        }
     }
 }

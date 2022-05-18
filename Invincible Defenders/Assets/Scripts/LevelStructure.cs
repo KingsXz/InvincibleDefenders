@@ -9,7 +9,6 @@ public class LevelStructure : ScriptableObject
 {
     [SerializeField] WaveInfo[] wave;
 
-
     public WaveInfo[] Wave { get => wave; set => wave = value; }
 }
 

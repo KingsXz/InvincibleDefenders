@@ -13,6 +13,8 @@ public class Tower : MonoBehaviour
     [SerializeField] StateTower towerState;
     [SerializeField] Enemy enemyFocus;
     [SerializeField] GameObject shotPre;
+    [SerializeField] int towerCost;
+    GameManager gM;
     float timer = 0;
     bool canShot = true;
 
@@ -24,6 +26,7 @@ public class Tower : MonoBehaviour
 
     void Start()
     {
+        gM = GameManager.Instance;
         isPlaced = false;
         rangeObj = Instantiate(towerRangeObj);
         rangeObj.transform.localScale = new Vector3(towerRange*2,towerRange*2,towerRange*2);
@@ -33,8 +36,9 @@ public class Tower : MonoBehaviour
 
     void Update()
     {
-        if(isPlaced == false && Input.GetKeyDown(KeyCode.Mouse0))
+        if(isPlaced == false && Input.GetKeyDown(KeyCode.Mouse0) && gM.PlayerMoney >= towerCost)
         {
+            gM.PlayerMoney -= towerCost;
             isPlaced = true;
             gameObject.GetComponent<SpriteRenderer>().color = new Color32(cor.r, cor.g, cor.b, 255);
             Destroy(rangeObj);
@@ -46,6 +50,11 @@ public class Tower : MonoBehaviour
             gameObject.GetComponent<SpriteRenderer>().color = new Color32(cor.r, cor.g, cor.b, 100);
             transform.position = new Vector3(mousePosition.x,mousePosition.y,transform.position.z);
             rangeObj.transform.position = transform.position;
+        }
+        if(isPlaced == false && Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            Destroy(rangeObj);
+            Destroy(gameObject);
         }
         if(isPlaced == true)
         {
@@ -101,15 +110,6 @@ public class Tower : MonoBehaviour
         }
         else
         {
-            
-            /*if(timer == 0)
-            {
-                GameObject shot = Instantiate(shotPre, transform.position, Quaternion.identity);
-                shot.GetComponent<Shot>().GetInfo(enemyFocus.gameObject,transform, towerDamage);
-            }
-            timer += Time.deltaTime;
-            if (timer >= 1)
-                timer = 0;*/
             if(canShot == true)
             {
                 GameObject shot = Instantiate(shotPre, transform.position, Quaternion.identity);

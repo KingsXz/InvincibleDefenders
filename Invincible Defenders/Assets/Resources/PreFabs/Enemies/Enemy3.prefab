@@ -175,9 +175,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pathCreator: {fileID: 0}
   speed: 0.6
-  hp: 300
+  maxHp: 300
+  currentHp: 0
   hpBar: {fileID: 5707438034649452877}
   distanceTraveled: 0
+  moneyItGives: 30
   enemyState: 0
 --- !u!61 &-5817543781048302779
 BoxCollider2D:
