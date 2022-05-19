@@ -12,6 +12,9 @@ public class UiManager : MonoBehaviour
     [SerializeField] Text hp;
     [SerializeField] Button startLevelButt;
     [SerializeField] Text money;
+    [SerializeField] Canvas winUi;
+    [SerializeField] Canvas loseUi;
+
     public enum TowerType
     {
         archer,
@@ -79,5 +82,15 @@ public class UiManager : MonoBehaviour
     public void ShowLevelStart()
     {
         startLevelButt.gameObject.SetActive(true);
+    }
+
+    public void ActivateWinUi()
+    {
+        winUi.gameObject.SetActive(true);
+    }
+
+    public void ActivateLoseUi()
+    {
+        loseUi.gameObject.SetActive(true);
     }
 }
