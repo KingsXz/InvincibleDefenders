@@ -12,8 +12,8 @@ public class UiManager : MonoBehaviour
     [SerializeField] Text hp;
     [SerializeField] Button startLevelButt;
     [SerializeField] Text money;
-    [SerializeField] Canvas winUi;
-    [SerializeField] Canvas loseUi;
+    [SerializeField] GameObject winUi;
+    [SerializeField] GameObject loseUi;
 
     public enum TowerType
     {
@@ -86,11 +86,11 @@ public class UiManager : MonoBehaviour
 
     public void ActivateWinUi()
     {
-        winUi.gameObject.SetActive(true);
+        winUi.SetActive(true);
     }
 
     public void ActivateLoseUi()
     {
-        loseUi.gameObject.SetActive(true);
+        loseUi.SetActive(true);
     }
 }

@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameStates gameState;
     [SerializeField] bool canCountdown;
     [SerializeField] float antiPrepTimer;
+    [SerializeField] int coroutinesNotFinished;
+    [SerializeField] int enemiesAlive;
     [Header("")]
     [SerializeField] LevelStructure lvlStruct;
     UiManager uI;
@@ -24,10 +26,12 @@ public class GameManager : MonoBehaviour
         PreparationTime,
         WaveTime,
         AntiPreparationTime,
+        WaitUntilEnd
     }
 
     public int PlayerHp { get => playerHp; set => playerHp = value; }
     public int PlayerMoney { get => playerMoney; set => playerMoney = value; }
+    public int EnemiesAlive { get => enemiesAlive; set => enemiesAlive = value; }
 
     private void Awake()
     {
@@ -69,9 +73,14 @@ public class GameManager : MonoBehaviour
             case GameStates.PreparationTime:
                 break;
             case GameStates.AntiPreparationTime:
+                wave++;
+                if (wave >= lvlStruct.Wave.Length)
+                {
+                    ManageGameState(GameStates.WaitUntilEnd);
+                    break;
+                }
                 uI.ShowLevelStart();
                 antiPrepTimer = 20;
-                wave++;
                 canCountdown = true;
                 break;
             case GameStates.WaveTime:
@@ -81,8 +90,10 @@ public class GameManager : MonoBehaviour
                     playerMoney += (int)conta;
                     canCountdown = false;
                 }
-                
                 StartWave(wave);
+                break;
+            case GameStates.WaitUntilEnd:
+                StartCoroutine(CheckEnemiesAlive());
                 break;
         }
     }
@@ -114,6 +125,7 @@ public class GameManager : MonoBehaviour
             if (lvlStruct.Wave[waveNumber].EnemySetPerLane[setNumber].Enemies[i].SpawnAfter == false)
             {
                 StartCoroutine(StartDelayedEnemyType(i, setNumber, paths, lvlStruct.Wave[waveNumber].EnemySetPerLane[setNumber].Enemies[i].DelaySpawn, waveNumber));
+                coroutinesNotFinished++;
             }
         }
         for (int i = 0; i < lvlStruct.Wave[waveNumber].EnemySetPerLane[setNumber].Enemies.Length; i++)
@@ -129,7 +141,9 @@ public class GameManager : MonoBehaviour
                     Enemy enemySpawned = Instantiate(lvlStruct.Wave[waveNumber].EnemySetPerLane[setNumber].Enemies[i].EnemyType);
                     int rand = Random.Range(0, 2);
                     enemySpawned.PathCreator = paths[rand];
-                    if(lvlStruct.Wave[waveNumber].EnemySetPerLane[setNumber].Enemies[i].DelayBetweenEnemies == 0)
+                    EnemiesAlive++;
+                    Debug.Log("123");
+                    if (lvlStruct.Wave[waveNumber].EnemySetPerLane[setNumber].Enemies[i].DelayBetweenEnemies == 0)
                     {
                         yield return new WaitForSeconds(1);
                     }
@@ -141,7 +155,17 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        yield return new WaitUntil(WaitUntilGenerationComplete);
         ManageGameState(GameStates.AntiPreparationTime);
+    }
+
+    bool WaitUntilGenerationComplete()
+    {
+        if(coroutinesNotFinished == 0)
+        {
+            return true;
+        }
+        return false;
     }
 
     IEnumerator StartDelayedEnemyType(int i, int setNumber, PathCreator[] paths, float timer, int waveNumber)
@@ -150,8 +174,31 @@ public class GameManager : MonoBehaviour
         for (int i2 = 0; i2 < lvlStruct.Wave[waveNumber].EnemySetPerLane[setNumber].Enemies[i].Quantity; i2++)
         {
             Enemy enemySpawned = Instantiate(lvlStruct.Wave[waveNumber].EnemySetPerLane[setNumber].Enemies[i].EnemyType);
-            enemySpawned.PathCreator = paths[0];
+            int rand = Random.Range(0, 2);
+            enemySpawned.PathCreator = paths[rand];
+            EnemiesAlive++;
+            Debug.Log("123");
             yield return new WaitForSeconds(1);
         }
+        coroutinesNotFinished--;
+    }
+
+    IEnumerator CheckEnemiesAlive()
+    {
+        yield return new WaitUntil(WaitUntilAllEnemiesDie);
+        if(playerHp > 0)
+        {
+            Time.timeScale = 0;
+            uI.ActivateWinUi();
+        }
+    }
+
+    bool WaitUntilAllEnemiesDie()
+    {
+        if(EnemiesAlive > 0)
+        {
+            return false;
+        }
+        return true;
     }
 }

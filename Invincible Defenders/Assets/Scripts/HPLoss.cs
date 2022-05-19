@@ -5,10 +5,12 @@ using UnityEngine;
 public class HPLoss : MonoBehaviour, IDamagable
 {
     GameManager gM;
+    UiManager uI;
 
     private void Start()
     {
-        gM = GameManager.Instance;    
+        gM = GameManager.Instance;
+        uI = UiManager.InstanceUi;
     }
 
     public void TakeDamage(float damageToTake)
@@ -17,7 +19,8 @@ public class HPLoss : MonoBehaviour, IDamagable
         UiManager.InstanceUi.UpdateHP(gM.PlayerHp);
         if(gM.PlayerHp <= 0)
         {
-            
+            Time.timeScale = 0;
+            uI.ActivateLoseUi();
         }
     }
 }

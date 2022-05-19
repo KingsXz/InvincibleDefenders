@@ -99,7 +99,6 @@ public class Tower : MonoBehaviour
     {
         if(enemyFocus == null)
         {
-            Debug.Log("dead");
             towerState = StateTower.idle;
             return;
         }

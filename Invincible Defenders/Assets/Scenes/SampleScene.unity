@@ -611,6 +611,8 @@ MonoBehaviour:
   gameState: 0
   canCountdown: 0
   antiPrepTimer: 0
+  coroutinesNotFinished: 0
+  enemiesAlive: 0
   lvlStruct: {fileID: 11400000, guid: aa725153c3ddc5c48ba682634cb5860f, type: 2}
 --- !u!4 &578860664
 Transform:
@@ -1183,6 +1185,8 @@ MonoBehaviour:
   hp: {fileID: 306143394}
   startLevelButt: {fileID: 1394121653}
   money: {fileID: 1156619280}
+  winUi: {fileID: 1038221822}
+  loseUi: {fileID: 509341982}
 --- !u!4 &1334027162
 Transform:
   m_ObjectHideFlags: 0
@@ -1449,7 +1453,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1395933881
 MonoBehaviour:
   m_ObjectHideFlags: 0

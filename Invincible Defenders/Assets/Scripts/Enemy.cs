@@ -59,16 +59,17 @@ public class Enemy : MonoBehaviour, IDamagable
         if(currentHp <= 0)
         {
             gM.PlayerMoney += moneyItGives;
+            gM.EnemiesAlive--;
             Destroy(gameObject);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("col");
         if (collision.gameObject.tag == "Base")
         {
             collision.gameObject.GetComponent<IDamagable>().TakeDamage(1f);
+            gM.EnemiesAlive--;
             Destroy(gameObject);
         }
     }
