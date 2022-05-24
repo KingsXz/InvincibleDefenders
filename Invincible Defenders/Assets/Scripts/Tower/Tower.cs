@@ -15,8 +15,8 @@ public class Tower : MonoBehaviour
     [SerializeField] GameObject shotPre;
     [SerializeField] int towerCost;
     GameManager gM;
-    float timer = 0;
     bool canShot = true;
+    bool canPlace = true;
 
     enum StateTower
     {
@@ -32,11 +32,12 @@ public class Tower : MonoBehaviour
         rangeObj.transform.localScale = new Vector3(towerRange*2,towerRange*2,towerRange*2);
         cor = gameObject.GetComponent<SpriteRenderer>().color;
         towerState = StateTower.idle;
+        gameObject.GetComponent<SpriteRenderer>().color = new Color32(cor.r, cor.g, cor.b, 100);
     }
 
     void Update()
     {
-        if(isPlaced == false && Input.GetKeyDown(KeyCode.Mouse0) && gM.PlayerMoney >= towerCost)
+        if(isPlaced == false && Input.GetKeyDown(KeyCode.Mouse0) && gM.PlayerMoney >= towerCost && canPlace==true)
         {
             gM.PlayerMoney -= towerCost;
             isPlaced = true;
@@ -47,9 +48,9 @@ public class Tower : MonoBehaviour
         {
             Vector3 mousePosition = Input.mousePosition;
             mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-            gameObject.GetComponent<SpriteRenderer>().color = new Color32(cor.r, cor.g, cor.b, 100);
             transform.position = new Vector3(mousePosition.x,mousePosition.y,transform.position.z);
             rangeObj.transform.position = transform.position;
+            CheckPlace();
         }
         if(isPlaced == false && Input.GetKeyDown(KeyCode.Mouse1))
         {
@@ -123,5 +124,21 @@ public class Tower : MonoBehaviour
         canShot = false;
         yield return new WaitForSeconds(1);
         canShot = true;
+    }
+
+    void CheckPlace()
+    {
+        Collider2D[] paths = Physics2D.OverlapCircleAll(transform.position, 0.8f, LayerMask.GetMask("Path"));
+        Collider2D[] towers = Physics2D.OverlapCircleAll(transform.position, 1, LayerMask.GetMask("Tower"));
+        if (paths.Length >= 1 || towers.Length >= 2)
+        {
+            gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+            canPlace = false;
+        }
+        else
+        {
+            gameObject.GetComponent<SpriteRenderer>().color = new Color32(cor.r, cor.g, cor.b, 100);
+            canPlace = true;
+        }
     }
 }

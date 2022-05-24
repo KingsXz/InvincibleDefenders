@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 4769695613665080048}
   - component: {fileID: 3205890067022194025}
   - component: {fileID: 1457454277358935415}
-  m_Layer: 0
+  - component: {fileID: -6168421392266274898}
+  m_Layer: 8
   m_Name: Tower1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,3 +103,19 @@ MonoBehaviour:
   enemyFocus: {fileID: 0}
   shotPre: {fileID: 7833766196944878583, guid: ccf2d28a11e4ee543933935da9d760dc, type: 3}
   towerCost: 100
+--- !u!58 &-6168421392266274898
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4573980234726976282}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5

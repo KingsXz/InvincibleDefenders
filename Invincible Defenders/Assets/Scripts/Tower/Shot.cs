@@ -15,7 +15,7 @@ public class Shot : MonoBehaviour
 
     void Start()
     {
-        shotSpeed = 1.2f;
+        shotSpeed = 2f;
     }
 
     
