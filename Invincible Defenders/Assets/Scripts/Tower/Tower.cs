@@ -4,60 +4,46 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
+    [Header("Tower Stats")]
     bool isPlaced;
-    [SerializeField] float towerRange = 2;
-    [SerializeField] GameObject towerRangeObj;
-    [SerializeField] float towerDamage = 35;
-    GameObject rangeObj;
-    Color32 cor;
-    [SerializeField] StateTower towerState;
-    [SerializeField] Enemy enemyFocus;
-    [SerializeField] GameObject shotPre;
-    [SerializeField] int towerCost;
+    [SerializeField] protected int towerLevel = 0;
+    [SerializeField] protected float[] towerRange = new float[3];
+    [SerializeField] protected int[] towerCost = new int[3];
+    [SerializeField] protected int[] towerMinDamage = new int[3];
+    [SerializeField] protected int[] towerMaxDamage = new int[3];
+    [SerializeField] protected float[] towerShotCooldown = new float[3];
+
+    [Header("Other")]
+    [SerializeField] protected StateTower towerState;
+    [SerializeField] protected Enemy enemyFocus;
+    [SerializeField] protected GameObject shotPre;
+    [SerializeField] protected GameObject towerRangeObj;
     GameManager gM;
     bool canShot = true;
     bool canPlace = true;
+    GameObject rangeObj;
+    Color32 cor;
 
-    enum StateTower
+    protected enum StateTower
     {
         shooting,
         idle
     }
 
-    void Start()
+    protected virtual void Start()
     {
         gM = GameManager.Instance;
         isPlaced = false;
         rangeObj = Instantiate(towerRangeObj);
-        rangeObj.transform.localScale = new Vector3(towerRange*2,towerRange*2,towerRange*2);
+        rangeObj.transform.localScale = new Vector3(towerRange[towerLevel]*2,towerRange[towerLevel]* 2,towerRange[towerLevel]* 2);
         cor = gameObject.GetComponent<SpriteRenderer>().color;
         towerState = StateTower.idle;
         gameObject.GetComponent<SpriteRenderer>().color = new Color32(cor.r, cor.g, cor.b, 100);
     }
 
-    void Update()
+    protected virtual void Update()
     {
-        if(isPlaced == false && Input.GetKeyDown(KeyCode.Mouse0) && gM.PlayerMoney >= towerCost && canPlace==true)
-        {
-            gM.PlayerMoney -= towerCost;
-            isPlaced = true;
-            gameObject.GetComponent<SpriteRenderer>().color = new Color32(cor.r, cor.g, cor.b, 255);
-            Destroy(rangeObj);
-        }
-        if(isPlaced == false)
-        {
-            Vector3 mousePosition = Input.mousePosition;
-            mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-            transform.position = new Vector3(mousePosition.x,mousePosition.y,transform.position.z);
-            rangeObj.transform.position = transform.position;
-            CheckPlace();
-        }
-        if(isPlaced == false && Input.GetKeyDown(KeyCode.Mouse1))
-        {
-            Destroy(rangeObj);
-            Destroy(gameObject);
-        }
-        if(isPlaced == true)
+        if (isPlaced == true)
         {
             switch (towerState)
             {
@@ -69,16 +55,39 @@ public class Tower : MonoBehaviour
                     break;
             }
         }
+        else
+        {
+            if (isPlaced == false && Input.GetKeyDown(KeyCode.Mouse0) && gM.PlayerMoney >= towerCost[towerLevel] && canPlace == true)
+            {
+                gM.PlayerMoney -= towerCost[towerLevel];
+                isPlaced = true;
+                gameObject.GetComponent<SpriteRenderer>().color = new Color32(cor.r, cor.g, cor.b, 255);
+                Destroy(rangeObj);
+            }
+            if (isPlaced == false)
+            {
+                Vector3 mousePosition = Input.mousePosition;
+                mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+                transform.position = new Vector3(mousePosition.x, mousePosition.y, transform.position.z);
+                rangeObj.transform.position = transform.position;
+                CheckPlace();
+            }
+            if (isPlaced == false && Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                Destroy(rangeObj);
+                Destroy(gameObject);
+            }
+        }
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position, towerRange);
+        Gizmos.DrawWireSphere(transform.position, towerRange[towerLevel]);
     }
 
     private void FindEnemyToShoot()
     {
-        Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, towerRange, LayerMask.GetMask("Enemy"));
+        Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, towerRange[towerLevel], LayerMask.GetMask("Enemy"));
         if(enemiesInRange.Length == 1)
         {
             enemyFocus = enemiesInRange[0].GetComponent<Enemy>();
@@ -103,7 +112,7 @@ public class Tower : MonoBehaviour
             towerState = StateTower.idle;
             return;
         }
-        if (Vector2.Distance(transform.position, enemyFocus.transform.position) >= towerRange + 0.2f)
+        if (Vector2.Distance(transform.position, enemyFocus.transform.position) >= towerRange[towerLevel] + 0.2f)
         {
             enemyFocus = null;
             towerState = StateTower.idle;
@@ -112,17 +121,15 @@ public class Tower : MonoBehaviour
         {
             if(canShot == true)
             {
-                GameObject shot = Instantiate(shotPre, transform.position, Quaternion.identity);
-                shot.GetComponent<Shot>().GetInfo(enemyFocus.gameObject, transform, towerDamage);
-                StartCoroutine(ShootCooldown());
+                SpawnShot();
             }
         }
     }
 
-    IEnumerator ShootCooldown()
+    protected IEnumerator ShootCooldown()
     {
         canShot = false;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(towerShotCooldown[towerLevel]);
         canShot = true;
     }
 
@@ -140,5 +147,10 @@ public class Tower : MonoBehaviour
             gameObject.GetComponent<SpriteRenderer>().color = new Color32(cor.r, cor.g, cor.b, 100);
             canPlace = true;
         }
+    }
+
+    protected virtual void SpawnShot()
+    {
+
     }
 }

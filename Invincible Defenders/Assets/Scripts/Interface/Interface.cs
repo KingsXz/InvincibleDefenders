@@ -1,4 +1,4 @@
 interface IDamagable
 {
-    void TakeDamage(float damageToTake);
+    void TakeDamage(float damageToTake, string type);
 }

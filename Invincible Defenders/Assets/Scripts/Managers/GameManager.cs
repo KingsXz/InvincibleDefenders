@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [Header("Player Stats")]
     [SerializeField] int playerHp = 20;
     [SerializeField] int playerMoney;
+
     [Header("Game Info")]
     [SerializeField] int wave;
     [SerializeField] GameStates gameState;
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] float antiPrepTimer;
     [SerializeField] int coroutinesNotFinished;
     [SerializeField] int enemiesAlive;
+
     [Header("")]
     [SerializeField] LevelStructure lvlStruct;
     UiManager uI;
@@ -142,7 +144,6 @@ public class GameManager : MonoBehaviour
                     int rand = Random.Range(0, 2);
                     enemySpawned.PathCreator = paths[rand];
                     EnemiesAlive++;
-                    Debug.Log("123");
                     if (lvlStruct.Wave[waveNumber].EnemySetPerLane[setNumber].Enemies[i].DelayBetweenEnemies == 0)
                     {
                         yield return new WaitForSeconds(1);
@@ -177,7 +178,6 @@ public class GameManager : MonoBehaviour
             int rand = Random.Range(0, 2);
             enemySpawned.PathCreator = paths[rand];
             EnemiesAlive++;
-            Debug.Log("123");
             yield return new WaitForSeconds(1);
         }
         coroutinesNotFinished--;

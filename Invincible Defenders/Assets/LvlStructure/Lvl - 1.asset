@@ -16,20 +16,10 @@ MonoBehaviour:
   - enemySetPerLane:
     - laneSet: {fileID: 8706022847403671144, guid: fbf76a7dab29eda4b9456c7022ca9fc0, type: 3}
       enemies:
-      - enemyType: {fileID: 5707438034707761269, guid: fd7d1400145b79a42beea3518a40a7cd, type: 3}
-        quantity: 3
+      - enemyType: {fileID: 5320794658345068993, guid: 00ebb00b3ae084945ae562fa603f5bbe, type: 3}
+        quantity: 10
         delaySpawn: 0
         spawnAfter: 1
-        delayBetweenEnemies: 0
-      - enemyType: {fileID: 5320794658345068993, guid: 00ebb00b3ae084945ae562fa603f5bbe, type: 3}
-        quantity: 5
-        delaySpawn: 2
-        spawnAfter: 1
-        delayBetweenEnemies: 0
-      - enemyType: {fileID: 1354122431462944110, guid: 1b00ab9fd36d8ca4e8f48eaec758dd3a, type: 3}
-        quantity: 3
-        delaySpawn: 10
-        spawnAfter: 0
         delayBetweenEnemies: 0
     giveMoney: 100
     typeOfRound: 0

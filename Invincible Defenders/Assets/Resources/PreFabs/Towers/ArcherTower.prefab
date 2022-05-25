@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4769695613665080048}
   - component: {fileID: 3205890067022194025}
-  - component: {fileID: 1457454277358935415}
   - component: {fileID: -6168421392266274898}
+  - component: {fileID: -4483592678202910221}
   m_Layer: 8
-  m_Name: Tower1
+  m_Name: ArcherTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84,25 +84,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1457454277358935415
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4573980234726976282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4618c0def59d95a4e93f8ff8973c5608, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  towerRange: 2
-  towerRangeObj: {fileID: 2100733520773977450, guid: 378c00c31c6a5d848b858536116dc266, type: 3}
-  towerDamage: 35
-  towerState: 0
-  enemyFocus: {fileID: 0}
-  shotPre: {fileID: 7833766196944878583, guid: ccf2d28a11e4ee543933935da9d760dc, type: 3}
-  towerCost: 100
 --- !u!58 &-6168421392266274898
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -119,3 +100,31 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &-4483592678202910221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4573980234726976282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fad8e0ad5ef9f33449644f1950084495, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  towerLevel: 0
+  towerRange:
+  - 2
+  - 2.5
+  - 3
+  towerCost: 460000006e000000a0000000
+  towerMinDamage: 04000000070000000a000000
+  towerMaxDamage: 060000000b00000010000000
+  towerShotCooldown:
+  - 0.8
+  - 0.6
+  - 0.5
+  towerState: 0
+  enemyFocus: {fileID: 0}
+  shotPre: {fileID: 7833766196944878583, guid: ccf2d28a11e4ee543933935da9d760dc, type: 3}
+  towerRangeObj: {fileID: 2100733520773977450, guid: 378c00c31c6a5d848b858536116dc266, type: 3}

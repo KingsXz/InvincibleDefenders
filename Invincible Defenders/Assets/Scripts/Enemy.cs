@@ -6,14 +6,21 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour, IDamagable
 {
-
-    [SerializeField] PathCreator pathCreator;
-    [SerializeField] float speed;
+    [Header("Enemy Stats")]
     [SerializeField] float maxHp;
     [SerializeField] float currentHp;
-    [SerializeField] Image hpBar;
-    [SerializeField] float distanceTraveled;
+    [SerializeField] float armor;
+    [SerializeField] float magicRes;
+    [SerializeField] int minDamage;
+    [SerializeField] int maxDamage;
+    [SerializeField] float attackSpeed;
+    [SerializeField] float speed;
     [SerializeField] int moneyItGives;
+
+    [Header("Enemy Stats")]
+    [SerializeField] PathCreator pathCreator;
+    [SerializeField] float distanceTraveled;
+    [SerializeField] Image hpBar;
     GameManager gM;
 
     [SerializeField]State enemyState;
@@ -53,9 +60,21 @@ public class Enemy : MonoBehaviour, IDamagable
         transform.position = PathCreator.path.GetPointAtDistance(DistanceTraveled);
     }
 
-    public void TakeDamage(float damageToTake)
+    public void TakeDamage(float damageToTake, string type)
     {
-        currentHp = currentHp - damageToTake;
+        if(type == "armor")
+        {
+            Debug.Log("armorDamage");
+            currentHp = currentHp - (damageToTake * armor);
+        }else if(type == "magic")
+        {
+            Debug.Log("magicDamage");
+            currentHp = currentHp - (damageToTake * magicRes);
+        }else
+        {
+            Debug.Log("noTypeDamage");
+            currentHp = currentHp - damageToTake;
+        }
         if(currentHp <= 0)
         {
             gM.PlayerMoney += moneyItGives;
@@ -68,7 +87,7 @@ public class Enemy : MonoBehaviour, IDamagable
     {
         if (collision.gameObject.tag == "Base")
         {
-            collision.gameObject.GetComponent<IDamagable>().TakeDamage(1f);
+            collision.gameObject.GetComponent<IDamagable>().TakeDamage(1f, "");
             gM.EnemiesAlive--;
             Destroy(gameObject);
         }
