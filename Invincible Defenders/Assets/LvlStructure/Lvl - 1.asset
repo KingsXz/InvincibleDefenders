@@ -20,7 +20,7 @@ MonoBehaviour:
         quantity: 10
         delaySpawn: 0
         spawnAfter: 1
-        delayBetweenEnemies: 0
+        delayBetweenEnemies: 2
     giveMoney: 100
     typeOfRound: 0
   - enemySetPerLane:

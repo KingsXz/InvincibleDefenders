@@ -135,16 +135,18 @@ public class Tower : MonoBehaviour
 
     void CheckPlace()
     {
-        Collider2D[] paths = Physics2D.OverlapCircleAll(transform.position, 0.8f, LayerMask.GetMask("Path"));
+        Collider2D[] paths = Physics2D.OverlapCircleAll(transform.position, 0.5f, LayerMask.GetMask("Path"));
         Collider2D[] towers = Physics2D.OverlapCircleAll(transform.position, 1, LayerMask.GetMask("Tower"));
         if (paths.Length >= 1 || towers.Length >= 2)
         {
             gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+            rangeObj.GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 100);
             canPlace = false;
         }
         else
         {
             gameObject.GetComponent<SpriteRenderer>().color = new Color32(cor.r, cor.g, cor.b, 100);
+            rangeObj.GetComponent<SpriteRenderer>().color = new Color32(69, 255, 0, 100);
             canPlace = true;
         }
     }

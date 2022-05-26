@@ -15,12 +15,6 @@ public class Shot : MonoBehaviour
     Vector2 pos1;
     Vector2 pos2;
 
-    void Start()
-    {
-        shotSpeed = 2f;
-    }
-
-    
     void Update()
     {
         if(target != null)
@@ -36,7 +30,23 @@ public class Shot : MonoBehaviour
         {
             if(target != null)
             {
-                target.GetComponent<IDamagable>().TakeDamage(shotDamage, shotType);
+                if(shotType == "art")
+                {
+                    target.GetComponent<IDamagable>().TakeDamage(shotDamage/2, "armor");
+                }
+                else
+                {
+                    target.GetComponent<IDamagable>().TakeDamage(shotDamage, shotType);
+                }
+                
+            }
+            if(shotType == "art")
+            {
+                Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(transform.position, 1f, LayerMask.GetMask("Enemy"));
+                foreach (var item in enemiesInRange)
+                {
+                    item.GetComponent<IDamagable>().TakeDamage(shotDamage/2, "");
+                } 
             }
             Destroy(gameObject);
         }
@@ -49,5 +59,13 @@ public class Shot : MonoBehaviour
         shotDamage = towerDamage;
         elevation = elevationRecieved;
         shotType = type;
+        if(type == "art")
+        {
+            shotSpeed = 1f;
+        }
+        else
+        {
+            shotSpeed = 2f;
+        }
     }
 }

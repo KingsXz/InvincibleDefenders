@@ -64,15 +64,14 @@ public class Enemy : MonoBehaviour, IDamagable
     {
         if(type == "armor")
         {
-            Debug.Log("armorDamage");
             currentHp = currentHp - (damageToTake * armor);
-        }else if(type == "magic")
+        }
+        else if(type == "magic")
         {
-            Debug.Log("magicDamage");
             currentHp = currentHp - (damageToTake * magicRes);
-        }else
+        }
+        else
         {
-            Debug.Log("noTypeDamage");
             currentHp = currentHp - damageToTake;
         }
         if(currentHp <= 0)
