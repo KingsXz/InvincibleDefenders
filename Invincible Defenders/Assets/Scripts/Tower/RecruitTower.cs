@@ -8,6 +8,9 @@ public class RecruitTower : MonoBehaviour
     [SerializeField] int towerLevel = 0;
     [SerializeField] float[] towerRange = new float[3];
     [SerializeField] int[] towerCost = new int[3];
+    [SerializeField] int[] recruitMinDamage = new int[3];
+    [SerializeField] int[] recruitMaxDamage = new int[3];
+    [SerializeField] int[] recruitMaxHp = new int[3];
 
     [Header("Other")]
     [SerializeField] StateRecruitTower towerStateRec;
@@ -84,11 +87,7 @@ public class RecruitTower : MonoBehaviour
         {
             if (rallyPlacedOnce == false)
             {
-                for (int i = 0; i < 3; i++)
-                {
-                    recruits[i] = Instantiate(recruitPre, transform.position, Quaternion.identity);
-                    recruits[i].GetComponent<RecruitAI>().GetRecruitInfo(i, towerLevel, rallyPos[i]);
-                }
+                StartCoroutine(SpawnRecruit(0.1f, 3, 0));
                 rallyPlacedOnce = true;
             }
             else
@@ -129,6 +128,32 @@ public class RecruitTower : MonoBehaviour
         {
             rallyObj.GetComponent<SpriteRenderer>().color = Color.white;
             return true;
+        }
+    }
+
+    public void SpawnRec(float secs, int num, int id)
+    {
+        StartCoroutine(SpawnRecruit(secs, num, id));
+    }
+
+    public IEnumerator SpawnRecruit(float secs, int num, int id) // if you wanna spawn only 1 recruit with a specific id put num = 0
+    {
+        if (num != 0)
+        {
+            for (int i = 0; i < num; i++)
+            {
+                yield return new WaitForSeconds(secs);
+                recruits[i] = Instantiate(recruitPre, transform.position, Quaternion.identity);
+                recruits[i].GetComponent<RecruitAI>().GetRecruitInfoSpawn(i, rallyPos[i], recruitMaxHp[towerLevel], recruitMinDamage[towerLevel], recruitMaxDamage[towerLevel], this.gameObject);
+            }
+        }
+        else
+        {
+            Debug.Log(secs);
+            yield return new WaitForSeconds(secs);
+            Debug.Log("depois");
+            recruits[id] = Instantiate(recruitPre, transform.position, Quaternion.identity);
+            recruits[id].GetComponent<RecruitAI>().GetRecruitInfoSpawn(id, rallyPos[id] , recruitMaxHp[towerLevel], recruitMinDamage[towerLevel], recruitMaxDamage[towerLevel], this.gameObject);
         }
     }
 }

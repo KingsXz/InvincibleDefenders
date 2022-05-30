@@ -294,6 +294,9 @@ MonoBehaviour:
   - 2
   - 2
   towerCost: 460000006e000000a0000000
+  recruitMinDamage: 010000000300000006000000
+  recruitMaxDamage: 03000000040000000a000000
+  recruitMaxHp: 3c0000006e000000b4000000
   towerStateRec: 0
   towerRangeObj: {fileID: 2100733520773977450, guid: 378c00c31c6a5d848b858536116dc266, type: 3}
   rallyObj: {fileID: 3003457139685246704}

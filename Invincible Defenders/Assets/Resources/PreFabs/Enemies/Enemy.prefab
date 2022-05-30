@@ -177,14 +177,15 @@ MonoBehaviour:
   currentHp: 0
   armor: 1
   magicRes: 1
-  minDamage: 1
-  maxDamage: 4
+  minDamage: 10
+  maxDamage: 40
   attackSpeed: 1
   speed: 0.6
   moneyItGives: 3
   pathCreator: {fileID: 0}
   distanceTraveled: 0
   hpBar: {fileID: 5320794658286006521}
+  recruitToFight: {fileID: 0}
   enemyState: 0
 --- !u!61 &-258194698171225711
 BoxCollider2D:

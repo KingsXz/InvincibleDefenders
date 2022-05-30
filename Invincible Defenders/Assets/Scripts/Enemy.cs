@@ -17,16 +17,19 @@ public class Enemy : MonoBehaviour, IDamagable
     [SerializeField] float speed;
     [SerializeField] int moneyItGives;
 
-    [Header("Enemy Stats")]
+    [Header("Other")]
     [SerializeField] PathCreator pathCreator;
     [SerializeField] float distanceTraveled;
     [SerializeField] Image hpBar;
+    [SerializeField] GameObject recruitToFight;
     GameManager gM;
 
     [SerializeField] State enemyState;
     public enum State
     {
         Path,
+        Wait,
+        Attack,
         Fight
     }
 
@@ -34,6 +37,7 @@ public class Enemy : MonoBehaviour, IDamagable
     public float DistanceTraveled { get => distanceTraveled; set => distanceTraveled = value; }
     public float MaxHp { get => maxHp; set => maxHp = value; }
     public State EnemyState { get => enemyState; set => enemyState = value; }
+    public GameObject RecruitToFight { get => recruitToFight; set => recruitToFight = value; }
 
     void Start()
     {
@@ -45,14 +49,22 @@ public class Enemy : MonoBehaviour, IDamagable
     void Update()
     {
         hpBar.fillAmount = (currentHp * 100 / maxHp) / 100;
-        if(EnemyState == State.Path)
+        switch (enemyState)
         {
-            FollowPath();
+            case State.Path:
+                FollowPath();
+                break;
+            case State.Wait:
+                CheckRecruit();
+                break;
+            case State.Attack:
+                CheckRecruit();
+                AttackRecruit();
+                break;
+            case State.Fight:
+                CheckRecruit();
+                break;
         }
-        else if(EnemyState == State.Fight)
-        {
-
-        } 
     }
 
     void FollowPath()
@@ -90,6 +102,35 @@ public class Enemy : MonoBehaviour, IDamagable
             collision.gameObject.GetComponent<IDamagable>().TakeDamage(1f, "");
             gM.EnemiesAlive--;
             Destroy(gameObject);
+        }
+    }
+
+    public void GetRecruit(GameObject rec)
+    {
+        RecruitToFight = rec;
+    }
+
+    void CheckRecruit()
+    {
+        if(recruitToFight == null)
+        {
+            enemyState = State.Path;
+        }
+    }
+
+    void AttackRecruit()
+    {
+        StartCoroutine(Attack());
+        enemyState = State.Fight;
+    }
+
+    IEnumerator Attack()
+    {
+        recruitToFight.GetComponent<IDamagable>().TakeDamage(Random.Range(minDamage, maxDamage), "");
+        yield return new WaitForSeconds(1);
+        if (enemyState == State.Fight)
+        {
+            StartCoroutine(Attack());
         }
     }
 }
