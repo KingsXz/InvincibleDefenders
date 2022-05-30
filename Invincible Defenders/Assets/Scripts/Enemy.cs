@@ -23,8 +23,8 @@ public class Enemy : MonoBehaviour, IDamagable
     [SerializeField] Image hpBar;
     GameManager gM;
 
-    [SerializeField]State enemyState;
-    enum State
+    [SerializeField] State enemyState;
+    public enum State
     {
         Path,
         Fight
@@ -33,22 +33,23 @@ public class Enemy : MonoBehaviour, IDamagable
     public PathCreator PathCreator { get => pathCreator; set => pathCreator = value; }
     public float DistanceTraveled { get => distanceTraveled; set => distanceTraveled = value; }
     public float MaxHp { get => maxHp; set => maxHp = value; }
+    public State EnemyState { get => enemyState; set => enemyState = value; }
 
     void Start()
     {
         currentHp = maxHp;
-        enemyState = State.Path;
+        EnemyState = State.Path;
         gM = GameManager.Instance;
     }
 
     void Update()
     {
         hpBar.fillAmount = (currentHp * 100 / maxHp) / 100;
-        if(enemyState == State.Path)
+        if(EnemyState == State.Path)
         {
             FollowPath();
         }
-        else if(enemyState == State.Fight)
+        else if(EnemyState == State.Fight)
         {
 
         } 

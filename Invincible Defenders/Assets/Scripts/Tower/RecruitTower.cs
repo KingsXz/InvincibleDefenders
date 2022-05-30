@@ -13,6 +13,11 @@ public class RecruitTower : MonoBehaviour
     [SerializeField] StateRecruitTower towerStateRec;
     [SerializeField] GameObject towerRangeObj;
     [SerializeField] GameObject rallyObj;
+    [SerializeField] Transform[] rallyPos;
+    [SerializeField] GameObject[] recruits = new GameObject[3];
+    [SerializeField] GameObject recruitPre;
+
+    bool rallyPlacedOnce = false;
     GameManager gM;
     GameObject rangeObj;
     bool canPlace = true;
@@ -77,6 +82,19 @@ public class RecruitTower : MonoBehaviour
         rallyObj.transform.position = new Vector3(mousePosition.x, mousePosition.y, transform.position.z);
         if (CheckRallyPlace() == true && Input.GetKeyDown(KeyCode.Mouse0))
         {
+            if (rallyPlacedOnce == false)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    recruits[i] = Instantiate(recruitPre, transform.position, Quaternion.identity);
+                    recruits[i].GetComponent<RecruitAI>().GetRecruitInfo(i, towerLevel, rallyPos[i]);
+                }
+                rallyPlacedOnce = true;
+            }
+            else
+            {
+                
+            }
             Destroy(rangeObj);
             towerStateRec = StateRecruitTower.done;
         }

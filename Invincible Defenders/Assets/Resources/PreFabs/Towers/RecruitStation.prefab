@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 684822496646266665}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6639521066429577579}
@@ -54,7 +54,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1436000647490705898}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.1, y: -0.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6639521066429577579}
@@ -169,7 +169,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4374727625726657546}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.1, y: -0.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6639521066429577579}
@@ -294,5 +294,15 @@ MonoBehaviour:
   - 2
   - 2
   towerCost: 460000006e000000a0000000
+  towerStateRec: 0
   towerRangeObj: {fileID: 2100733520773977450, guid: 378c00c31c6a5d848b858536116dc266, type: 3}
   rallyObj: {fileID: 3003457139685246704}
+  rallyPos:
+  - {fileID: 6264589319157786785}
+  - {fileID: 5985245669682201701}
+  - {fileID: 614719840388242672}
+  recruits:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  recruitPre: {fileID: 8447298159723718794, guid: 9ee6d227d79c95441aca05bc41808b81, type: 3}
