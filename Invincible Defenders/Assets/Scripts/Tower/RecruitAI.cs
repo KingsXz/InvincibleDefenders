@@ -1,19 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RecruitAI : MonoBehaviour, IDamagable
 {
     [SerializeField] int id;
     [SerializeField] int minDamage;
     [SerializeField] int maxDamage;
-    [SerializeField] int maxHp;
-    [SerializeField] int currentHp;
+    [SerializeField] float maxHp;
+    [SerializeField] float currentHp;
     [SerializeField] StateRecruit recruitState;
     [SerializeField] Transform placeToRest;
     [SerializeField] GameObject enemyFocus;
     [SerializeField] GameObject mainTower;
+    [SerializeField] Image hpBar;
     int level;
+    float regenHpTimer;
+
+    public float CurrentHp 
+    { 
+        get => currentHp;
+        set => currentHp = Mathf.Clamp(value, 0, maxHp); 
+    }
 
     enum StateRecruit
     {
@@ -25,17 +34,20 @@ public class RecruitAI : MonoBehaviour, IDamagable
     void Start()
     {
         recruitState = StateRecruit.resting;
-        currentHp = maxHp;
+        CurrentHp = maxHp;
+        regenHpTimer = 0;
     }
 
     
     void Update()
     {
+        hpBar.fillAmount = (currentHp * 100 / maxHp) / 100;
         switch (recruitState)
         {
             case StateRecruit.resting:
                 Rest();
                 LookForEnemies();
+                RegenHP();
                 break;
             case StateRecruit.goToEnemy:
                 goToEnemy();
@@ -61,11 +73,11 @@ public class RecruitAI : MonoBehaviour, IDamagable
         mainTower = tower;
     }
 
-    public void GetRecruitInfo(int hpMax, int minDamageToGet, int maxDamageToGet)
+    public void GetRecruitInfo(float hpMax, int minDamageToGet, int maxDamageToGet)
     {
-        int hpToHeal = hpMax - maxHp;
+        float hpToHeal = hpMax - maxHp;
         maxHp = hpMax;
-        currentHp += hpToHeal;
+        CurrentHp += hpToHeal;
         minDamage = minDamageToGet;
         maxDamage = maxDamageToGet;
     }
@@ -109,6 +121,7 @@ public class RecruitAI : MonoBehaviour, IDamagable
 
     void goToEnemy()
     {
+        if(enemyFocus != null)
         transform.position = Vector2.MoveTowards(transform.position, enemyFocus.transform.position, 1 * Time.deltaTime);
         if(Vector2.Distance(transform.position,enemyFocus.transform.position) <= 0.5f)
         {
@@ -144,11 +157,20 @@ public class RecruitAI : MonoBehaviour, IDamagable
 
     public void TakeDamage(float damageToTake, string type)
     {
-        currentHp -= (int)damageToTake;
-        if(currentHp <= 0)
+        CurrentHp -= (int)damageToTake;
+        if(CurrentHp <= 0)
         {
             Destroy(gameObject);
             mainTower.GetComponent<RecruitTower>().SpawnRec(5, 0, id);
+        }
+    }
+
+    void RegenHP() 
+    {
+        regenHpTimer += Time.deltaTime;
+        if(regenHpTimer >= 1)
+        {
+            CurrentHp += 10;
         }
     }
 }
