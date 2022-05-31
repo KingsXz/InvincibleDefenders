@@ -122,10 +122,12 @@ public class RecruitAI : MonoBehaviour, IDamagable
     void goToEnemy()
     {
         if(enemyFocus != null)
-        transform.position = Vector2.MoveTowards(transform.position, enemyFocus.transform.position, 1 * Time.deltaTime);
-        if(Vector2.Distance(transform.position,enemyFocus.transform.position) <= 0.5f)
         {
-            recruitState = StateRecruit.attacking;
+            transform.position = Vector2.MoveTowards(transform.position, enemyFocus.transform.position, 1 * Time.deltaTime);
+            if (Vector2.Distance(transform.position, enemyFocus.transform.position) <= 0.5f)
+            {
+                recruitState = StateRecruit.attacking;
+            }
         }
     }
 

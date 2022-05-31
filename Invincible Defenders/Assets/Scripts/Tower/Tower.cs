@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Tower : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class Tower : MonoBehaviour
     [SerializeField] protected Enemy enemyFocus;
     [SerializeField] protected GameObject shotPre;
     [SerializeField] protected GameObject towerRangeObj;
+    [SerializeField] protected GameObject canvasUi;
     GameManager gM;
     bool canShot = true;
     bool canPlace = true;
@@ -45,6 +47,7 @@ public class Tower : MonoBehaviour
     {
         if (isPlaced == true)
         {
+            CheckClicked();
             switch (towerState)
             {
                 case StateTower.idle:
@@ -154,5 +157,39 @@ public class Tower : MonoBehaviour
     protected virtual void SpawnShot()
     {
 
+    }
+
+    void CheckClicked()
+    {
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        if (Input.GetKeyDown(KeyCode.Mouse0) && Vector2.Distance(mousePosition, transform.position) < 0.5f)
+        {
+            Debug.Log(this.gameObject.name);
+            canvasUi.SetActive(true);
+        }
+
+        if(Input.GetKeyDown(KeyCode.Mouse1) && canvasUi.activeSelf == true)
+        {
+            canvasUi.SetActive(false);
+        }
+    }
+
+    public void LevelUpTower()
+    {
+        if(towerLevel < 2)
+        {
+            if (gM.PlayerMoney >= towerCost[towerLevel + 1])
+            {
+                gM.PlayerMoney -= towerCost[towerLevel + 1];
+                towerLevel += 1;
+                canvasUi.SetActive(false);
+            }
+        }
+    }
+
+    public void DeActivateUi()
+    {
+        canvasUi.SetActive(false);
     }
 }
