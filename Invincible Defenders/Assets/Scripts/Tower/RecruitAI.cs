@@ -5,17 +5,19 @@ using UnityEngine.UI;
 
 public class RecruitAI : MonoBehaviour, IDamagable
 {
+    [Header("Enemy Stats")]
     [SerializeField] int id;
     [SerializeField] int minDamage;
     [SerializeField] int maxDamage;
     [SerializeField] float maxHp;
     [SerializeField] float currentHp;
+
+    [Header("Other")]
     [SerializeField] StateRecruit recruitState;
     [SerializeField] Transform placeToRest;
     [SerializeField] GameObject enemyFocus;
     [SerializeField] GameObject mainTower;
     [SerializeField] Image hpBar;
-    int level;
     float regenHpTimer;
 
     public float CurrentHp 
@@ -89,7 +91,7 @@ public class RecruitAI : MonoBehaviour, IDamagable
 
     void LookForEnemies()
     {
-        Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(placeToRest.position, 1, LayerMask.GetMask("Enemy"));
+        Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(placeToRest.position, 0.8f, LayerMask.GetMask("Enemy"));
         foreach (var item in enemiesInRange)
         {
             if(enemyFocus == null)

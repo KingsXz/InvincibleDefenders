@@ -19,8 +19,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] int coroutinesNotFinished;
     [SerializeField] int enemiesAlive;
 
-    [Header("")]
+    [Header("Other")]
     [SerializeField] LevelStructure lvlStruct;
+    [SerializeField] GameObject abilityRangeObj;
+    Abilities abilityType;
+    GameObject rangeObj;
     UiManager uI;
 
     public enum GameStates
@@ -30,6 +33,14 @@ public class GameManager : MonoBehaviour
         AntiPreparationTime,
         WaitUntilEnd
     }
+
+    public enum Abilities
+    {
+        RockSlide,
+        PoisonBomb,
+        Caltrops
+    }
+
 
     public int PlayerHp { get => playerHp; set => playerHp = value; }
     public int PlayerMoney { get => playerMoney; set => playerMoney = value; }
@@ -200,5 +211,28 @@ public class GameManager : MonoBehaviour
             return false;
         }
         return true;
+    }
+
+    public void ActivateAbility(string ab)
+    {
+        if(ab == "rock")
+        {
+            StartCoroutine(SpawnAbility(Abilities.RockSlide));
+        }
+        if(ab == "poison")
+        {
+            StartCoroutine(SpawnAbility(Abilities.PoisonBomb));
+        }
+        if (ab == "caltrops")
+        {
+            StartCoroutine(SpawnAbility(Abilities.Caltrops));
+        }
+    }
+
+    IEnumerator SpawnAbility(Abilities ab)
+    {
+        yield return new WaitForEndOfFrame();
+        rangeObj = Instantiate(abilityRangeObj);
+        rangeObj.transform.localScale = new Vector3(1, 1, 1);
     }
 }

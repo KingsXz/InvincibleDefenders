@@ -69,7 +69,7 @@ public class UiManager : MonoBehaviour
             Button but = child.GetComponent<Button>();
             but.gameObject.SetActive(false);
         }
-        GameObject tower = Resources.Load("PreFabs/Towers/"+towerName) as GameObject;
+        GameObject tower = Resources.Load("PreFabs/Towers/" + towerName) as GameObject;
         Instantiate(tower);
     }
 
