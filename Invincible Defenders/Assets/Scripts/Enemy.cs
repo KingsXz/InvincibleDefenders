@@ -33,6 +33,13 @@ public class Enemy : MonoBehaviour, IDamagable
         Fight
     }
 
+    public enum DebufType
+    {
+        Slow,
+        LoseArmor,
+        LoseMr
+    }
+
     public PathCreator PathCreator { get => pathCreator; set => pathCreator = value; }
     public float DistanceTraveled { get => distanceTraveled; set => distanceTraveled = value; }
     public float MaxHp { get => maxHp; set => maxHp = value; }
@@ -74,24 +81,63 @@ public class Enemy : MonoBehaviour, IDamagable
     }
 
     public void TakeDamage(float damageToTake, string type)
-    {
-        if(type == "armor")
+    {      
+        switch (type)
         {
-            currentHp = currentHp - (damageToTake * armor);
+            case "armor":
+                currentHp = currentHp - (damageToTake * (1 - (armor / 100)));
+                break;
+            case "magic":
+                currentHp = currentHp - (damageToTake * (1 - (magicRes / 100)));
+                break;
+            case "rock":
+                currentHp = currentHp - damageToTake;
+                StartCoroutine(Debuff(DebufType.LoseArmor, 0.5f));
+                break;
+            case "poison":
+                currentHp = currentHp - damageToTake;
+                StartCoroutine(Debuff(DebufType.LoseMr, 0.5f));
+                break;
+            case "caltrops":
+                currentHp = currentHp - damageToTake;
+                StartCoroutine(Debuff(DebufType.Slow, 0.5f));
+                break;
+            default:
+                currentHp = currentHp - damageToTake;
+                break;
         }
-        else if(type == "magic")
-        {
-            currentHp = currentHp - (damageToTake * magicRes);
-        }
-        else
-        {
-            currentHp = currentHp - damageToTake;
-        }
-        if(currentHp <= 0)
+        if (currentHp <= 0)
         {
             gM.PlayerMoney += moneyItGives;
             gM.EnemiesAlive--;
             Destroy(gameObject);
+        }
+    }
+
+    public void ApplyDebuf(DebufType type, float time)
+    {
+        StartCoroutine(Debuff(type, time));
+    }
+
+    IEnumerator Debuff(DebufType debuf, float time)
+    {
+        switch (debuf)
+        {
+            case DebufType.Slow:
+                speed = speed/2;
+                yield return new WaitForSeconds(time);
+                speed = speed * 2;
+                break;
+            case DebufType.LoseArmor:
+                armor = armor / 2;
+                yield return new WaitForSeconds(time);
+                armor = armor * 2;
+                break;
+            case DebufType.LoseMr:
+                magicRes = magicRes / 2;
+                yield return new WaitForSeconds(time);
+                magicRes = magicRes * 2;
+                break;
         }
     }
 

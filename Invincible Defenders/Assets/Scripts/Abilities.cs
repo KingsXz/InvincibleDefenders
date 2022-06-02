@@ -5,7 +5,9 @@ using UnityEngine;
 public class Abilities : MonoBehaviour
 {
     bool deployed = false;
-    [SerializeField] List<Enemy> enemiesInRange = new List<Enemy>();
+    GameManager.AbilityType abilityType;
+
+    //[SerializeField] List<Enemy> enemiesInRange = new List<Enemy>();
 
     void Start()
     {
@@ -23,12 +25,11 @@ public class Abilities : MonoBehaviour
         {
             deployed = true;
             StartCoroutine(Effect());
-            InvokeRepeating("DoDamage", 0, 0.2f);
-            /*Collider2D[] enemiesDetected = Physics2D.OverlapCircleAll(transform.position, 0.5f, LayerMask.GetMask("Enemy"));
+            Collider2D[] enemiesDetected = Physics2D.OverlapCircleAll(transform.position, 0.5f, LayerMask.GetMask("Enemy"));
             foreach (var item in enemiesDetected)
             {
-                enemiesInRange.Add(item.GetComponent<Enemy>());
-            }*/
+                StartCoroutine(DoDamage(item.GetComponent<Enemy>()));
+            }
         }
         if (deployed == false)
         {
@@ -45,15 +46,65 @@ public class Abilities : MonoBehaviour
     IEnumerator Effect()
     {
         yield return new WaitForSeconds(2);
+        Collider2D[] enemiesDetected = Physics2D.OverlapCircleAll(transform.position, 0.5f, LayerMask.GetMask("Enemy"));
+        foreach (var item in enemiesDetected)
+        {
+            switch (abilityType)
+            {
+                case GameManager.AbilityType.Caltrops:
+                    item.GetComponent<Enemy>().ApplyDebuf(Enemy.DebufType.Slow, 2);
+                    break;
+                case GameManager.AbilityType.PoisonBomb:
+                    item.GetComponent<Enemy>().ApplyDebuf(Enemy.DebufType.LoseMr, 2);
+                    break;
+                case GameManager.AbilityType.RockSlide:
+                    item.GetComponent<Enemy>().ApplyDebuf(Enemy.DebufType.LoseArmor, 2);
+                    break;
+            }
+        }
         Destroy(gameObject);
     }
 
-    void DoDamage()
+    IEnumerator DoDamage(Enemy enem)
     {
-        foreach (var item in enemiesInRange)
+        if(enem != null)
         {
-            item.TakeDamage(1, "");
-        }
+            switch (abilityType)
+            {
+                case GameManager.AbilityType.Caltrops:
+                    enem.GetComponent<IDamagable>().TakeDamage(1, "caltrops");
+                    break;
+                case GameManager.AbilityType.PoisonBomb:
+                    enem.GetComponent<IDamagable>().TakeDamage(1, "poison");
+                    break;
+                case GameManager.AbilityType.RockSlide:
+                    enem.GetComponent<IDamagable>().TakeDamage(1, "rock");
+                    break;
+            }
+            yield return new WaitForSeconds(0.5f);
+            if (enem != null)
+            {
+                if (Vector2.Distance(enem.transform.position, transform.position) <= 0.5f)
+                {
+                    StartCoroutine(DoDamage(enem));
+                }
+                else
+                {
+                    switch (abilityType)
+                    {
+                        case GameManager.AbilityType.Caltrops:
+                            enem.ApplyDebuf(Enemy.DebufType.Slow, 2);
+                            break;
+                        case GameManager.AbilityType.PoisonBomb:
+                            enem.ApplyDebuf(Enemy.DebufType.LoseMr, 2);
+                            break;
+                        case GameManager.AbilityType.RockSlide:
+                            enem.ApplyDebuf(Enemy.DebufType.LoseArmor, 2);
+                            break;
+                    }
+                }
+            }
+        }    
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -63,12 +114,17 @@ public class Abilities : MonoBehaviour
             Enemy enemyScript = collision.GetComponent<Enemy>();
             if (enemyScript != null)
             {
-                enemiesInRange.Add(enemyScript);
+                StartCoroutine(DoDamage(enemyScript));
             }
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    public void GetAbilityType(GameManager.AbilityType type)
+    {
+        abilityType = type;
+    }
+
+    /*private void OnTriggerExit2D(Collider2D collision)
     {
         if (deployed == true)
         {
@@ -78,7 +134,7 @@ public class Abilities : MonoBehaviour
                 enemiesInRange.Remove(enemyScript);
             }
         }
-    }
+    }*/
 
 
 }

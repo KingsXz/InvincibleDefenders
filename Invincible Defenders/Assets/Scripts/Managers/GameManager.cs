@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     [Header("Other")]
     [SerializeField] LevelStructure lvlStruct;
     [SerializeField] GameObject abilityRangeObj;
-    Abilities abilityType;
+    AbilityType abilityType;
     GameObject rangeObj;
     UiManager uI;
 
@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
         WaitUntilEnd
     }
 
-    public enum Abilities
+    public enum AbilityType
     {
         RockSlide,
         PoisonBomb,
@@ -217,22 +217,23 @@ public class GameManager : MonoBehaviour
     {
         if(ab == "rock")
         {
-            StartCoroutine(SpawnAbility(Abilities.RockSlide));
+            StartCoroutine(SpawnAbility(AbilityType.RockSlide));
         }
         if(ab == "poison")
         {
-            StartCoroutine(SpawnAbility(Abilities.PoisonBomb));
+            StartCoroutine(SpawnAbility(AbilityType.PoisonBomb));
         }
         if (ab == "caltrops")
         {
-            StartCoroutine(SpawnAbility(Abilities.Caltrops));
+            StartCoroutine(SpawnAbility(AbilityType.Caltrops));
         }
     }
 
-    IEnumerator SpawnAbility(Abilities ab)
+    IEnumerator SpawnAbility(AbilityType ab)
     {
         yield return new WaitForEndOfFrame();
         rangeObj = Instantiate(abilityRangeObj);
         rangeObj.transform.localScale = new Vector3(1, 1, 1);
+        rangeObj.GetComponent<Abilities>().GetAbilityType(ab);
     }
 }

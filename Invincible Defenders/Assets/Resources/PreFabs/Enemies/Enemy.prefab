@@ -175,8 +175,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 16
   currentHp: 0
-  armor: 1
-  magicRes: 1
+  armor: 50
+  magicRes: 0
   minDamage: 1
   maxDamage: 4
   attackSpeed: 1

@@ -275,8 +275,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 28
   currentHp: 0
-  armor: 1
-  magicRes: 1
+  armor: 0
+  magicRes: 0
   minDamage: 1
   maxDamage: 3
   attackSpeed: 1.5
@@ -285,6 +285,7 @@ MonoBehaviour:
   pathCreator: {fileID: 0}
   distanceTraveled: 0
   hpBar: {fileID: 1354122431385990230}
+  recruitToFight: {fileID: 0}
   enemyState: 0
 --- !u!61 &-3347697407846510115
 BoxCollider2D:
