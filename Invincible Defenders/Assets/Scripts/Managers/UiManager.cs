@@ -55,6 +55,7 @@ public class UiManager : MonoBehaviour
 
     public void OpenTowerMenu()
     {
+        buttMenu.GetComponent<Image>().enabled = false;
         foreach(Transform child in buttMenu)
         {
             Button but = child.GetComponent<Button>();
@@ -64,6 +65,7 @@ public class UiManager : MonoBehaviour
 
     public void ButtonSelected(string towerName)
     {
+        buttMenu.GetComponent<Image>().enabled = true;
         foreach (Transform child in buttMenu)
         {
             Button but = child.GetComponent<Button>();
@@ -93,4 +95,5 @@ public class UiManager : MonoBehaviour
     {
         loseUi.SetActive(true);
     }
+
 }
