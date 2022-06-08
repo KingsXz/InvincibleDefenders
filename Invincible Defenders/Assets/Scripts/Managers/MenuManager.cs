@@ -1,24 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }  
+    [SerializeField] Image menu;
 
     public void ChangeScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     } 
+
+    public void OpenMenu()
+    {
+        menu.gameObject.SetActive(true);
+    }
+
+    public void CloseMenu()
+    {
+        menu.gameObject.SetActive(false);
+    }
 }
