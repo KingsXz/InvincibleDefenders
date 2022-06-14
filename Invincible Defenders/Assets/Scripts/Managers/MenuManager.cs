@@ -8,6 +8,7 @@ public class MenuManager : MonoBehaviour
 {
 
     [SerializeField] Image menu;
+    [SerializeField] Image audio;
 
     public void ChangeScene(string sceneName)
     {
@@ -17,6 +18,18 @@ public class MenuManager : MonoBehaviour
     public void OpenMenu()
     {
         menu.gameObject.SetActive(true);
+    }
+
+    public void OpenAudio()
+    {
+        menu.gameObject.SetActive(false);
+        audio.gameObject.SetActive(true);
+    }
+
+    public void CloseAudio()
+    {
+        menu.gameObject.SetActive(true);
+        audio.gameObject.SetActive(false);
     }
 
     public void CloseMenu()
