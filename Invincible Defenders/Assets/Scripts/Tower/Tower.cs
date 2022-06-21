@@ -183,6 +183,30 @@ public class Tower : MonoBehaviour
             {
                 gM.PlayerMoney -= towerCost[towerLevel + 1];
                 towerLevel += 1;
+                string name = gameObject.GetComponent<SpriteRenderer>().sprite.name;
+                char[] myChars = name.ToCharArray();
+                foreach (char item in name)
+                {
+                    if(item == 1)
+                    {
+
+                    }
+                }
+
+                for (int i = 0; i < myChars.Length; i++)
+                {
+                    if(myChars[i] == '1')
+                    {
+                        myChars[i] = '2';
+                    }else
+                    if (myChars[i] == '2')
+                    {
+                        myChars[i] = '3';
+                    }
+                }
+                string nameFinal = new string(myChars);
+                Debug.Log("Resources/Sprites/InGame/" + nameFinal);
+                gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/InGame/" + nameFinal);
                 canvasUi.SetActive(false);
             }
         }
