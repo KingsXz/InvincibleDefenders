@@ -7,8 +7,6 @@ public class Abilities : MonoBehaviour
     bool deployed = false;
     GameManager.AbilityType abilityType;
 
-    //[SerializeField] List<Enemy> enemiesInRange = new List<Enemy>();
-
     void Start()
     {
         deployed = false;
