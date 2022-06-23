@@ -49,7 +49,7 @@ public class RecruitAI : MonoBehaviour, IDamagable
             case StateRecruit.resting:
                 Rest();
                 LookForEnemies();
-                RegenHP();
+                //RegenHP();
                 break;
             case StateRecruit.goToEnemy:
                 goToEnemy();

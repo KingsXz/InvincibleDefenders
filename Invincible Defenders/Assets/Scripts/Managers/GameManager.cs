@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using PathCreation;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,11 +21,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] int enemiesAlive;
 
     [Header("Other")]
+    [SerializeField] Button rockBtt;
+    [SerializeField] Button poisBtt;
+    [SerializeField] Button calBtt;
     [SerializeField] LevelStructure lvlStruct;
     [SerializeField] GameObject abilityRangeObj;
     AbilityType abilityType;
     GameObject rangeObj;
     UiManager uI;
+    bool enableCooldonw;
+    float abilityTimer;
 
     public enum GameStates
     {
@@ -45,6 +51,7 @@ public class GameManager : MonoBehaviour
     public int PlayerHp { get => playerHp; set => playerHp = value; }
     public int PlayerMoney { get => playerMoney; set => playerMoney = value; }
     public int EnemiesAlive { get => enemiesAlive; set => enemiesAlive = value; }
+    public bool EnableCooldonw { get => enableCooldonw; set => enableCooldonw = value; }
 
     private void Awake()
     {
@@ -63,10 +70,15 @@ public class GameManager : MonoBehaviour
         ManageGameState(GameStates.PreparationTime);
         uI = UiManager.InstanceUi;
         playerMoney = 400;
+        abilityTimer = 0;
     }
 
     void Update()
     {
+        if(EnableCooldonw == true)
+        {
+            AbilitiesCoolwn();
+        }
         if(canCountdown == true)
         {
             antiPrepTimer -= Time.deltaTime;
@@ -76,6 +88,27 @@ public class GameManager : MonoBehaviour
                 canCountdown = false;
             }
         }
+    }
+
+    public void AbilitiesCoolwn()
+    {
+        abilityTimer += Time.deltaTime;
+        calBtt.GetComponent<Image>().fillAmount = abilityTimer / 10;
+        poisBtt.GetComponent<Image>().fillAmount = abilityTimer / 10;
+        rockBtt.GetComponent<Image>().fillAmount = abilityTimer / 10;
+        poisBtt.interactable = false;
+        rockBtt.interactable = false;
+        calBtt.interactable = false;
+        Debug.Log(abilityTimer);
+        if(abilityTimer >= 10)
+        {
+            abilityTimer = 0;
+            rockBtt.interactable = true;
+            poisBtt.interactable = true;
+            calBtt.interactable = true;
+            EnableCooldonw = false;
+        }
+
     }
 
     public void ManageGameState(GameStates stateToBe)
@@ -189,7 +222,7 @@ public class GameManager : MonoBehaviour
             int rand = Random.Range(0, 2);
             enemySpawned.PathCreator = paths[rand];
             EnemiesAlive++;
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(lvlStruct.Wave[waveNumber].EnemySetPerLane[setNumber].Enemies[i].DelayBetweenEnemies);
         }
         coroutinesNotFinished--;
     }
@@ -236,4 +269,5 @@ public class GameManager : MonoBehaviour
         rangeObj.transform.localScale = new Vector3(1, 1, 1);
         rangeObj.GetComponent<Abilities>().GetAbilityType(ab);
     }
+
 }

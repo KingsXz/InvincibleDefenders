@@ -149,7 +149,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 0.06203556, g: 0, b: 1, a: 1}
   m_FlipX: 0
@@ -173,13 +173,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfc7dc47f2501c34b93902303dceb1ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pathCreator: {fileID: 0}
-  speed: 0.6
   maxHp: 300
   currentHp: 0
-  hpBar: {fileID: 5707438034649452877}
-  distanceTraveled: 0
+  armor: 0
+  magicRes: 0
+  minDamage: 0
+  maxDamage: 0
+  attackSpeed: 0
+  speed: 0.6
   moneyItGives: 30
+  pathCreator: {fileID: 0}
+  distanceTraveled: 0
+  hpBar: {fileID: 5707438034649452877}
+  recruitToFight: {fileID: 0}
   enemyState: 0
 --- !u!61 &-5817543781048302779
 BoxCollider2D:
