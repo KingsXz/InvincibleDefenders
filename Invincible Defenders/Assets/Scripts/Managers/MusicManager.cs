@@ -45,7 +45,6 @@ public class MusicManager : MonoBehaviour
         switch (clip)
         {
             case "MenuMusic":
-                Debug.Log("do");
                 musicSrc.PlayOneShot(musicMainMenu);
                 musicSrc.loop = true;
                 break;
@@ -56,7 +55,7 @@ public class MusicManager : MonoBehaviour
         }
     }
 
-    public void UpdateMusicVolume(float volume)
+    public void GetMusicVolume(float volume)
     {
         musicVolume = volume;
     }

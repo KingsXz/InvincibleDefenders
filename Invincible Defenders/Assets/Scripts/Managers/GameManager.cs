@@ -29,8 +29,10 @@ public class GameManager : MonoBehaviour
     AbilityType abilityType;
     GameObject rangeObj;
     UiManager uI;
+    MusicManager mM;
     bool enableCooldonw;
     float abilityTimer;
+    bool isPaused;
 
     public enum GameStates
     {
@@ -69,12 +71,31 @@ public class GameManager : MonoBehaviour
     {
         ManageGameState(GameStates.PreparationTime);
         uI = UiManager.InstanceUi;
+        mM = MusicManager.InstanceMusic;
         playerMoney = 400;
         abilityTimer = 0;
+        isPaused = false;
+        mM.PlayMusic("InGameMusic");
+        
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            isPaused = !isPaused;
+            if(isPaused == true)
+            {
+                Time.timeScale = 0;
+                GetComponent<MenuManager>().OpenMenu();
+            }
+            if (isPaused == false)
+            {
+                Time.timeScale = 1;
+                GetComponent<MenuManager>().CloseAudio();
+                GetComponent<MenuManager>().CloseMenu();
+            }
+        }
         if(EnableCooldonw == true)
         {
             AbilitiesCoolwn();
@@ -99,7 +120,6 @@ public class GameManager : MonoBehaviour
         poisBtt.interactable = false;
         rockBtt.interactable = false;
         calBtt.interactable = false;
-        Debug.Log(abilityTimer);
         if(abilityTimer >= 10)
         {
             abilityTimer = 0;
@@ -126,13 +146,13 @@ public class GameManager : MonoBehaviour
                     break;
                 }
                 uI.ShowLevelStart();
-                antiPrepTimer = 20;
+                antiPrepTimer = 40;
                 canCountdown = true;
                 break;
             case GameStates.WaveTime:
                 if(canCountdown == true)
                 {
-                    float conta = lvlStruct.Wave[wave - 1].GiveMoney * antiPrepTimer / 20;
+                    float conta = lvlStruct.Wave[wave - 1].GiveMoney * antiPrepTimer / 40;
                     playerMoney += (int)conta;
                     canCountdown = false;
                 }
@@ -186,6 +206,7 @@ public class GameManager : MonoBehaviour
                     }
                     Enemy enemySpawned = Instantiate(lvlStruct.Wave[waveNumber].EnemySetPerLane[setNumber].Enemies[i].EnemyType);
                     int rand = Random.Range(0, 2);
+                    enemySpawned.GetComponent<SpriteRenderer>().sortingOrder = rand + 1;
                     enemySpawned.PathCreator = paths[rand];
                     EnemiesAlive++;
                     if (lvlStruct.Wave[waveNumber].EnemySetPerLane[setNumber].Enemies[i].DelayBetweenEnemies == 0)
@@ -220,6 +241,7 @@ public class GameManager : MonoBehaviour
         {
             Enemy enemySpawned = Instantiate(lvlStruct.Wave[waveNumber].EnemySetPerLane[setNumber].Enemies[i].EnemyType);
             int rand = Random.Range(0, 2);
+            enemySpawned.GetComponent<SpriteRenderer>().sortingOrder = rand + 1;
             enemySpawned.PathCreator = paths[rand];
             EnemiesAlive++;
             yield return new WaitForSeconds(lvlStruct.Wave[waveNumber].EnemySetPerLane[setNumber].Enemies[i].DelayBetweenEnemies);

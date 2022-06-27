@@ -12,6 +12,7 @@ public class MenuManager : MonoBehaviour
 
     public void ChangeScene(string sceneName)
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(sceneName);
     } 
 
@@ -35,5 +36,21 @@ public class MenuManager : MonoBehaviour
     public void CloseMenu()
     {
         menu.gameObject.SetActive(false);
+        Time.timeScale = 1;
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+
+    public void UpdateReturnFxVolume(float volume)
+    {
+        GameObject.Find("SoundManager").GetComponent<SoundManager>().GetFxVolume(volume);
+    }
+
+    public void UpdateMusicVolume(float volume)
+    {
+        GameObject.Find("MusicManager").GetComponent<MusicManager>().GetMusicVolume(volume);
     }
 }

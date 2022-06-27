@@ -78,7 +78,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void UpdateReturnFxVolume(float volume)
+    public void GetFxVolume(float volume)
     {
         soundFxVolume = volume;
     }

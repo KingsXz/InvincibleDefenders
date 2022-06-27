@@ -58,7 +58,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &1354122430398843449
 MonoBehaviour:
@@ -203,7 +203,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1354122431462944099}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.2276525, y: -6.825976, z: 0}
+  m_LocalPosition: {x: -6.2276525, y: -6.825976, z: 4}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.46908602}
   m_Children:
   - {fileID: 1354122430398843455}
@@ -247,8 +247,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -2129013845
+  m_SortingLayer: 4
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 13ead628a5bbc0b4f8b658ea50da85bf, type: 3}
   m_Color: {r: 0.7075472, g: 0.4361106, b: 0.19023673, a: 1}
@@ -276,12 +276,12 @@ MonoBehaviour:
   maxHp: 28
   currentHp: 0
   armor: 0
-  magicRes: 0
-  minDamage: 1
-  maxDamage: 3
-  attackSpeed: 1.5
+  magicRes: 50
+  minDamage: 3
+  maxDamage: 9
+  attackSpeed: 0.5
   speed: 1.2
-  moneyItGives: 5
+  moneyItGives: 8
   pathCreator: {fileID: 0}
   distanceTraveled: 0
   hpBar: {fileID: 1354122431385990230}

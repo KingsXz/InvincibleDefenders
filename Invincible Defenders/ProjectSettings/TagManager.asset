@@ -42,3 +42,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Enem1
+    uniqueID: 4227744075
+    locked: 0
+  - name: Enem2
+    uniqueID: 659287297
+    locked: 0
+  - name: Enem3
+    uniqueID: 2535395365
+    locked: 0
+  - name: Enem4
+    uniqueID: 2165953451
+    locked: 0

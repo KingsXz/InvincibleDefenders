@@ -52,12 +52,12 @@ public class RecruitAI : MonoBehaviour, IDamagable
                 //RegenHP();
                 break;
             case StateRecruit.goToEnemy:
-                goToEnemy();
                 CheckEnemy();
+                goToEnemy();
                 break;
             case StateRecruit.attacking:
-                AttackEnemy();
                 CheckEnemy();
+                AttackEnemy();
                 break;
             case StateRecruit.fighting:
                 CheckEnemy();

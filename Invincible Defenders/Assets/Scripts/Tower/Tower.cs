@@ -20,11 +20,13 @@ public class Tower : MonoBehaviour
     [SerializeField] protected GameObject shotPre;
     [SerializeField] protected GameObject towerRangeObj;
     [SerializeField] protected GameObject canvasUi;
+    [SerializeField] protected Text towerCostUi;
     GameManager gM;
     bool canShot = true;
     bool canPlace = true;
     GameObject rangeObj;
     Color32 cor;
+    
 
     protected enum StateTower
     {
@@ -165,8 +167,8 @@ public class Tower : MonoBehaviour
         mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
         if (Input.GetKeyDown(KeyCode.Mouse0) && Vector2.Distance(mousePosition, transform.position) < 0.5f)
         {
-            Debug.Log(this.gameObject.name);
             canvasUi.SetActive(true);
+            towerCostUi.text = ""+towerCost[towerLevel + 1];
         }
 
         if(Input.GetKeyDown(KeyCode.Mouse1) && canvasUi.activeSelf == true)
@@ -205,7 +207,6 @@ public class Tower : MonoBehaviour
                     }
                 }
                 string nameFinal = new string(myChars);
-                Debug.Log("Resources/Sprites/InGame/" + nameFinal);
                 gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Sprites/InGame/" + nameFinal);
                 canvasUi.SetActive(false);
             }
