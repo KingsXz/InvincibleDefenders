@@ -543,7 +543,7 @@ MonoBehaviour:
   - 3
   towerState: 0
   enemyFocus: {fileID: 0}
-  shotPre: {fileID: 7833766196944878583, guid: ccf2d28a11e4ee543933935da9d760dc, type: 3}
+  shotPre: {fileID: 7021921493845722408, guid: 62772b8a9176a62448a89d25ef6257fa, type: 3}
   towerRangeObj: {fileID: 2100733520773977450, guid: 378c00c31c6a5d848b858536116dc266, type: 3}
   canvasUi: {fileID: 9215602453503156607}
   towerCostUi: {fileID: 7206388623469820376}

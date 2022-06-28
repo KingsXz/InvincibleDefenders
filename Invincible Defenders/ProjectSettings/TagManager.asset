@@ -54,3 +54,6 @@ TagManager:
   - name: Enem4
     uniqueID: 2165953451
     locked: 0
+  - name: Shots
+    uniqueID: 1698391011
+    locked: 0
