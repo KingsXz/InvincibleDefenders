@@ -177,8 +177,8 @@ MonoBehaviour:
   currentHp: 0
   armor: 70
   magicRes: 0
-  minDamage: 4
-  maxDamage: 12
+  minDamage: 8
+  maxDamage: 24
   attackSpeed: 2.5
   speed: 0.4
   moneyItGives: 40
